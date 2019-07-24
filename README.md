@@ -1,2 +1,2 @@
 # python-translate
-An article being noted English translate to Korean by using Google or Naver PAPAGO Translating
+An article noted English translate to Korean by using Google or Naver PAPAGO translating source.
