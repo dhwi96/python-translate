@@ -1,0 +1,44 @@
+# En-Ko translating by using Pytesseract & Naver PAPAGO
+
+import os 
+import sys
+import urllib.request
+import requests
+
+# 1 . Using Pytesseract to extract text in Original IMG   
+#-------------------------------------------------------------------------
+try:
+    from PIL import Image
+except ImportError:
+    import Image
+import pytesseract
+
+pytesseract.pytesseract.tesseract_cmd = (r'C:\Program Files\Tesseract-OCR\tesseract.exe')
+print("======================= Original Text =======================")
+print(pytesseract.image_to_string(Image.open(r'C:\Users\COMPUTER\Desktop\notitle.jpg')))
+print("=============================================================")
+print(" ")
+#-------------------------------------------------------------------------
+
+
+# 2. Using Naver PAPAGO to translate extracted Text 
+#-------------------------------------------------------------------------
+client_id = "JNAr5RgneZf1u7WBscNy"
+client_secret = "wHdSYpjDhI"
+
+encText = pytesseract.image_to_string(Image.open(r'C:\Users\COMPUTER\Desktop\notitle.jpg'))
+
+url = "https://openapi.naver.com/v1/papago/n2mt"
+
+headers = {"X-Naver-Client-Id" :client_id,
+            "X-Naver-Client-Secret":client_secret}
+
+params = (("source", "en"),
+            ("target", "ko"),
+            ("text", encText))
+
+response = requests.post(url, data=params, headers=headers)
+if response.status_code == 200:
+    response_body = response.json()
+    print(response_body[u'message'][u'result'][u'translatedText'])
+#-------------------------------------------------------------------------
